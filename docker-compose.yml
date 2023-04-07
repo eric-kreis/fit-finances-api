@@ -7,8 +7,6 @@ services:
       context: .
       target: development
     command: yarn start:debug
-    environment:
-      - PRISMA_STUDIO_PORT=5555
     env_file:
       - .env
     volumes:
