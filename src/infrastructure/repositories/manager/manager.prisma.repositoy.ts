@@ -28,8 +28,12 @@ export class ManagerPrismaRepository extends ManagerRepository {
     return new Manager(newManager);
   }
 
-  public findById(id: string): Promise<Manager | null> {
-    throw new Error('Method not implemented.');
+  public async findById(id: string): Promise<Manager | null> {
+    const manager = await this._prismaService.manager.findUnique({ where: { id } });
+
+    if (!manager) return manager;
+
+    return new Manager(manager);
   }
 
   public async findByCredentials(email: string, password: string): Promise<Manager | null> {
