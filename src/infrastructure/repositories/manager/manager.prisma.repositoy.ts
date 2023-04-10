@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { Manager } from '@domain/manager/manager';
 import { ManagerRepository } from '@domain/manager/manager.repository';
 import { CreateManagerType } from '@domain/manager/manager.types';
@@ -44,7 +45,28 @@ export class ManagerPrismaRepository extends ManagerRepository {
     return new Manager(manager);
   }
 
-  public update(id: string, payload: Partial<CreateManagerType>): Promise<Manager> {
-    throw new Error('Method not implemented.');
+  public async update(id: string, payload: Partial<CreateManagerType>): Promise<Manager> {
+    if (payload.email) {
+      const managerWithEmail = await this._prismaService.manager.findUnique({
+        where: { email: payload.email },
+      });
+
+      if (managerWithEmail && managerWithEmail.id !== id) {
+        throw new ManagerAlreadyRegistredException();
+      }
+    }
+
+    const updateManageData: Prisma.ManagerUpdateInput = {
+      email: payload.email,
+    };
+
+    if (payload.password) updateManageData.password = await bcrypt.hash(payload.password, 10);
+
+    const updatedManager = await this._prismaService.manager.update({
+      where: { id },
+      data: updateManageData,
+    });
+
+    return new Manager(updatedManager);
   }
 }
