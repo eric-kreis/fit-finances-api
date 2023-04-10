@@ -121,4 +121,36 @@ describe('ManagerPrismaRepository', () => {
       expect(manager).toBeNull();
     });
   });
+
+  describe('update()', () => {
+    it('should return the updated manager', async () => {
+      prismaService.manager.update.mockResolvedValue(prismaManagerMock);
+
+      expect.assertions(2);
+
+      const manager = await sut.update(managerMock.id, {
+        email: prismaManagerMock.email,
+        password: prismaManagerMock.password,
+      });
+
+      expect(manager).toEqual(managerMock);
+      expect(manager).toBeInstanceOf(Manager);
+    });
+
+    it('should throw a manager already registred exception', async () => {
+      prismaService.manager.findUnique.mockResolvedValue(prismaManagerMock);
+
+      expect.assertions(2);
+
+      try {
+        await sut.update(managerMock.id, {
+          email: prismaManagerMock.email,
+          password: prismaManagerMock.password,
+        });
+      } catch (e) {
+        expect(e).toBeDefined();
+        expect(e).toBeInstanceOf(ManagerAlreadyRegistredException);
+      }
+    });
+  });
 });
