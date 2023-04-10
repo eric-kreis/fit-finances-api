@@ -65,4 +65,27 @@ describe('ManagerPrismaRepository', () => {
       }
     });
   });
+
+  describe('findById()', () => {
+    it('should return a manager', async () => {
+      prismaService.manager.findUnique.mockResolvedValue(prismaManagerMock);
+
+      expect.assertions(2);
+
+      const manager = await sut.findById(managerMock.id);
+
+      expect(manager).toEqual(managerMock);
+      expect(manager).toBeInstanceOf(Manager);
+    });
+
+    it('should return null', async () => {
+      prismaService.manager.findUnique.mockResolvedValue(null);
+
+      expect.assertions(1);
+
+      const manager = await sut.findById(managerMock.id);
+
+      expect(manager).toBeNull();
+    });
+  });
 });
