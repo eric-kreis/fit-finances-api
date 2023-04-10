@@ -88,4 +88,33 @@ describe('ManagerPrismaRepository', () => {
       expect(manager).toBeNull();
     });
   });
+
+  describe('findByCredentials()', () => {
+    it('should return a manager', async () => {
+      prismaService.manager.findUnique.mockResolvedValue(prismaManagerMock);
+
+      expect.assertions(2);
+
+      const manager = await sut.findByCredentials(
+        prismaManagerMock.email,
+        prismaManagerMock.password,
+      );
+
+      expect(manager).toEqual(managerMock);
+      expect(manager).toBeInstanceOf(Manager);
+    });
+
+    it('should return null', async () => {
+      prismaService.manager.findUnique.mockResolvedValue(null);
+
+      expect.assertions(1);
+
+      const manager = await sut.findByCredentials(
+        prismaManagerMock.email,
+        prismaManagerMock.password,
+      );
+
+      expect(manager).toBeNull();
+    });
+  });
 });
