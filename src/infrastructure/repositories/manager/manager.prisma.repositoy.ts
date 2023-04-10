@@ -14,7 +14,6 @@ export class ManagerPrismaRepository extends ManagerRepository {
 
   public async create({ email, password }: CreateManagerType): Promise<Manager> {
     const managerWithEmail = await this._prismaService.manager.findUnique({ where: { email } });
-
     if (managerWithEmail) throw new ManagerAlreadyRegistredException();
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -30,14 +29,19 @@ export class ManagerPrismaRepository extends ManagerRepository {
 
   public async findById(id: string): Promise<Manager | null> {
     const manager = await this._prismaService.manager.findUnique({ where: { id } });
-
     if (!manager) return manager;
 
     return new Manager(manager);
   }
 
   public async findByCredentials(email: string, password: string): Promise<Manager | null> {
-    throw new Error('Method not implemented.');
+    const manager = await this._prismaService.manager.findUnique({ where: { email } });
+    if (!manager) return manager;
+
+    const passwordMatch = await bcrypt.compare(password, manager.password);
+    if (!passwordMatch) return null;
+
+    return new Manager(manager);
   }
 
   public update(id: string, payload: Partial<CreateManagerType>): Promise<Manager> {
