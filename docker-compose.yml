@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       context: .
       target: development
-    command: yarn start:debug
+    command: yarn start:debug 0.0.0.0:9229
     env_file:
       - .env
     volumes:
