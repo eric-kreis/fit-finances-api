@@ -3,7 +3,7 @@
 
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "windows"]
 }
 
 datasource db {
@@ -11,10 +11,70 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  email String  @unique
-  name  String?
+model Manager {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String   @unique
+  password  String
 
-  @@map("users")
+  @@map("managers")
+}
+
+model Members {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  cpf         String   @unique
+  email       String   @unique
+  name        String
+  phoneNumber String?
+
+  @@map("members")
+}
+
+model Cashflow {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime      @default(now())
+  amount      Float
+  date        DateTime
+  description String?
+  type        CashflowType
+  tagsIDs     String[]      @db.ObjectId
+  tags        CashflowTag[] @relation(fields: [tagsIDs], references: [id])
+
+  @@index([type])
+  @@map("cashflows")
+}
+
+model CashflowTag {
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  type         CashflowType
+  cashflowsIDs String[]     @db.ObjectId
+  cashflows    Cashflow[]   @relation(fields: [cashflowsIDs], references: [id])
+
+  @@unique([name, type], name: "nameType")
+  @@index([type])
+  @@map("cashflowTags")
+}
+
+model MonthlyCashflowSummary {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  year        Int
+  month       Int
+  inflows     Float    @default(0)
+  outflows    Float    @default(0)
+  netCashflow Float    @default(0)
+
+  @@unique([month, year], name: "monthYear")
+  @@index([year])
+  @@map("monthlyCashflows")
+}
+
+enum CashflowType {
+  INFLOW
+  OUTFLOW
 }
