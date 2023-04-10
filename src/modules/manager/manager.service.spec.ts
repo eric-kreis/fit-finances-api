@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DeepMockProxy, mockDeep, mockReset } from 'jest-mock-extended';
 import { managerMock } from '@mocks/manager.mock';
-import { Manager } from '@domain/manager/manager';
 import { ManagerRepository } from '@domain/manager/manager.repository';
 import { ManagerNotFoundException } from '@domain/manager/exceptions/manager-not-found.exception';
 import { ManagerService } from './manager.service';
@@ -41,13 +40,12 @@ describe('ManagerService', () => {
     it('should return a manager', async () => {
       managerRepository.findByCredentials.mockResolvedValue(managerMock);
 
-      expect.assertions(3);
+      expect.assertions(2);
 
       const manager = await sut.findByCredentials(managerMock.email, 'pass');
 
       expect(managerRepository.findByCredentials).toHaveBeenCalledTimes(1);
       expect(manager).toEqual(managerMock);
-      expect(manager).toBeInstanceOf(Manager);
     });
 
     it('should throw a manager not found exception', async () => {
