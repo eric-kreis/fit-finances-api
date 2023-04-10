@@ -18,11 +18,12 @@ const config: Config.InitialOptions = {
     '<rootDir>/infra/prisma.service.ts',
   ],
   moduleNameMapper: {
-    '^@auth/(.*)': '<rootDir>/infrastructure/auth/$1',
-    '^@mocks/(.*)': '<rootDir>/mocks/$1',
     '^@config/(.*)': '<rootDir>/config/$1',
-    '^@swagger/(.*)': '<rootDir>/swagger/$1',
+    '^@domain/(.*)': '<rootDir>/infrastructure/domain/$1',
     '^@infrastructure/(.*)': '<rootDir>/infrastructure/$1',
+    '^@mocks/(.*)': '<rootDir>/mocks/$1',
+    '^@modules/(.*)': '<rootDir>/infrastructure/modules/$1',
+    '^@shared/(.*)': '<rootDir>/infrastructure/shared/$1',
   },
 };
 
