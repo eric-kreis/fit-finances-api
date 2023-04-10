@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { prismaMock } from '@mocks/prisma/singleton';
 import { DeepMockProxy } from 'jest-mock-extended';
@@ -91,7 +92,10 @@ describe('ManagerPrismaRepository', () => {
 
   describe('findByCredentials()', () => {
     it('should return a manager', async () => {
-      prismaService.manager.findUnique.mockResolvedValue(prismaManagerMock);
+      prismaService.manager.findUnique.mockResolvedValue({
+        ...prismaManagerMock,
+        password: bcrypt.hashSync(prismaManagerMock.password, 10),
+      });
 
       expect.assertions(2);
 
