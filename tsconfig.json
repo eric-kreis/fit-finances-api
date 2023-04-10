@@ -24,8 +24,8 @@
       "@domain/*": [
         "./src/domain/*"
       ],
-      "@infrastruture/*": [
-        "./src/infrastruture/*"
+      "@infrastructure/*": [
+        "./src/infrastructure/*"
       ],
       "@mocks/*": [
         "./src/mocks/*"
