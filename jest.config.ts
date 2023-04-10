@@ -19,11 +19,11 @@ const config: Config.InitialOptions = {
   ],
   moduleNameMapper: {
     '^@config/(.*)': '<rootDir>/config/$1',
-    '^@domain/(.*)': '<rootDir>/infrastructure/domain/$1',
+    '^@domain/(.*)': '<rootDir>/domain/$1',
     '^@infrastructure/(.*)': '<rootDir>/infrastructure/$1',
     '^@mocks/(.*)': '<rootDir>/mocks/$1',
-    '^@modules/(.*)': '<rootDir>/infrastructure/modules/$1',
-    '^@shared/(.*)': '<rootDir>/infrastructure/shared/$1',
+    '^@modules/(.*)': '<rootDir>/modules/$1',
+    '^@shared/(.*)': '<rootDir>/shared/$1',
   },
 };
 
