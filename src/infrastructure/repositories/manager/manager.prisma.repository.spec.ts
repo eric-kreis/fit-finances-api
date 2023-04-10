@@ -124,6 +124,7 @@ describe('ManagerPrismaRepository', () => {
 
   describe('update()', () => {
     it('should return the updated manager', async () => {
+      prismaService.manager.findUnique.mockResolvedValue(prismaManagerMock);
       prismaService.manager.update.mockResolvedValue(prismaManagerMock);
 
       expect.assertions(2);
@@ -138,7 +139,7 @@ describe('ManagerPrismaRepository', () => {
     });
 
     it('should throw a manager already registred exception', async () => {
-      prismaService.manager.findUnique.mockResolvedValue(prismaManagerMock);
+      prismaService.manager.findUnique.mockResolvedValue({ ...prismaManagerMock, id: 'id' });
 
       expect.assertions(2);
 
