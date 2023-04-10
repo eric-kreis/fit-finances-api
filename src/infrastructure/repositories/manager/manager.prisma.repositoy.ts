@@ -28,7 +28,7 @@ export class ManagerPrismaRepository extends ManagerRepository {
     return new Manager(newManager);
   }
 
-  public findById(id: string): Promise<Manager> {
+  public findById(id: string): Promise<Manager | null> {
     throw new Error('Method not implemented.');
   }
 
