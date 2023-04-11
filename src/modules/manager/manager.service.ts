@@ -3,6 +3,7 @@ import { ManagerService as DomainManagerService } from '@domain/manager/manager.
 import { Manager } from '@domain/manager/manager';
 import { ManagerRepository } from '@domain/manager/manager.repository';
 import { ManagerNotFoundException } from '@domain/manager/exceptions/manager-not-found.exception';
+import { ManagerForbiddenException } from '@domain/manager/exceptions/manager-forbidden.exception';
 import { UpdateManagerDto } from './dto/update-manager.dto';
 
 @Injectable()
@@ -24,6 +25,9 @@ export class ManagerService extends DomainManagerService {
     payload: UpdateManagerDto,
     authUserId: string,
   ): Promise<Manager> {
-    throw new Error('Method not implemented.');
+    if (id !== authUserId) throw new ManagerForbiddenException();
+    const oldManager = await this._managerRepository.findById(id);
+    if (!oldManager) throw new ManagerNotFoundException();
+    return this._managerRepository.update(id, payload);
   }
 }
