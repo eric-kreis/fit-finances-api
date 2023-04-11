@@ -73,7 +73,8 @@ describe('ManagerService', () => {
 
       const manager = await sut.update(managerMock.id, managerMock, managerMock.id);
 
-      expect(managerRepository.findByCredentials).toHaveBeenCalledTimes(1);
+      expect(managerRepository.findById).toHaveBeenCalledTimes(1);
+      expect(managerRepository.update).toHaveBeenCalledTimes(1);
       expect(manager).toEqual(managerMock);
     });
 
@@ -83,7 +84,7 @@ describe('ManagerService', () => {
       expect.assertions(2);
 
       try {
-        await sut.update(managerMock.email, managerMock, managerMock.id);
+        await sut.update(managerMock.id, managerMock, managerMock.id);
       } catch (e) {
         expect(managerRepository.findById).toHaveBeenCalledTimes(1);
         expect(e).toBeInstanceOf(ManagerNotFoundException);
@@ -94,7 +95,7 @@ describe('ManagerService', () => {
       expect.assertions(2);
 
       try {
-        await sut.update(managerMock.email, managerMock, faker.database.mongodbObjectId());
+        await sut.update(managerMock.id, managerMock, faker.database.mongodbObjectId());
       } catch (e) {
         expect(managerRepository.findById).toHaveBeenCalledTimes(0);
         expect(e).toBeInstanceOf(ManagerForbiddenException);
