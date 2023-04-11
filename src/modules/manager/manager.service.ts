@@ -19,7 +19,11 @@ export class ManagerService extends DomainManagerService {
     return manager;
   }
 
-  public async update(id: string, payload: UpdateManagerDto): Promise<Manager> {
+  public async update(
+    id: string,
+    payload: UpdateManagerDto,
+    authUserId: string,
+  ): Promise<Manager> {
     throw new Error('Method not implemented.');
   }
 }
