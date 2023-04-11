@@ -18,6 +18,7 @@ const config: Config.InitialOptions = {
     '<rootDir>/infra/prisma.service.ts',
   ],
   moduleNameMapper: {
+    '^@auth/(.*)': '<rootDir>/auth/$1',
     '^@config/(.*)': '<rootDir>/config/$1',
     '^@domain/(.*)': '<rootDir>/domain/$1',
     '^@infrastructure/(.*)': '<rootDir>/infrastructure/$1',
