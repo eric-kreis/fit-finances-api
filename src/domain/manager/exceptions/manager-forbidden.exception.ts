@@ -1,10 +1,10 @@
 import { DomainErrorCode } from '@domain/domain-error-code.enum';
 import { DomainException } from '@domain/domain.exception';
 
-export class ManagerAlreadyRegistredException extends DomainException {
-  code = DomainErrorCode.ManagerAlreadyRegistred;
+export class ManagerForbiddenException extends DomainException {
+  code = DomainErrorCode.ManagerForbidden;
 
-  message = 'Manager already registred';
+  message = 'Missing sufficient permissions';
 
   constructor(message?: string) {
     super();

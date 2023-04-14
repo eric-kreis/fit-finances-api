@@ -2,7 +2,12 @@ import { DomainErrorCode } from '@domain/domain-error-code.enum';
 import { DomainException } from '@domain/domain.exception';
 
 export class ManagerNotFoundException extends DomainException {
-  code: DomainErrorCode.ManagerNotFound;
+  code = DomainErrorCode.ManagerNotFound;
 
   message = 'Manager not found';
+
+  constructor(message?: string) {
+    super();
+    this.message = message || this.message;
+  }
 }
