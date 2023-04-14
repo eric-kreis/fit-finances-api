@@ -25,6 +25,7 @@ const config: Config.InitialOptions = {
     '^@mocks/(.*)': '<rootDir>/mocks/$1',
     '^@modules/(.*)': '<rootDir>/modules/$1',
     '^@shared/(.*)': '<rootDir>/shared/$1',
+    '^@swagger/(.*)': '<rootDir>/swagger/$1',
   },
 };
 

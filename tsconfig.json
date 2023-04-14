@@ -12,6 +12,7 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
+    "resolveJsonModule": true,
     "strictNullChecks": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
@@ -38,6 +39,9 @@
       ],
       "@shared/*": [
         "./src/shared/*"
+      ],
+      "@swagger/*": [
+        "./src/swagger/*"
       ]
     }
   }
