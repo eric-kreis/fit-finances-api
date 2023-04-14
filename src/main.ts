@@ -1,8 +1,9 @@
 import helmet from 'helmet';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 import { documentBuilderConfig } from '@config/swagger';
+import { AllExceptionsFilter } from '@shared/filters/all-exceptions.filter';
 import { AppModule } from './app.module';
 import { PrismaService } from './infrastructure/prisma.service';
 
@@ -14,6 +15,16 @@ async function bootstrap() {
 
   app.enableCors();
   app.use(helmet());
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
+  app.useGlobalFilters(new AllExceptionsFilter(logger));
 
   const swagerDocument = SwaggerModule.createDocument(app, documentBuilderConfig);
   SwaggerModule.setup('docs', app, swagerDocument);
