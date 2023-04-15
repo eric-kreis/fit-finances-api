@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { MemberAlreadyRegistredException } from '@domain/member/exceptions/member-already-registred.exception';
+import { DomainSortOrder } from '@domain/enums';
 import { Member } from '@domain/member/member';
 import { MemberRepository } from '@domain/member/member.repository';
-import { CreateMemberType, MemberPaginationType, FindOneMemberType } from '@domain/member/member.types';
+import { MemberAlreadyRegistredException } from '@domain/member/exceptions/member-already-registred.exception';
+import { CreateMemberType, MemberPaginationType, FindOneMemberType, UpdateMemberType } from '@domain/member/member.types';
 import { PrismaService } from '@infrastructure/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class MemberPrismaRepository extends MemberRepository {
@@ -70,7 +72,7 @@ export class MemberPrismaRepository extends MemberRepository {
     return new Member(member);
   }
 
-  public async update(id: string, payload: Partial<CreateMemberType>): Promise<Member> {
+  public async update(id: string, payload: UpdateMemberType): Promise<Member> {
     throw new Error('Method not implemented.');
   }
 
