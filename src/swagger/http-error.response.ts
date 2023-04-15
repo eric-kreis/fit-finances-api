@@ -1,4 +1,4 @@
-import { DomainErrorCode } from '@domain/domain-error-code.enum';
+import { DomainErrorCode } from '@domain/enums';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class HttpErrorResponse {
