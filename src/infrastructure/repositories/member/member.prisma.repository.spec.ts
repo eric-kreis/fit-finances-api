@@ -165,7 +165,7 @@ describe('MemberPrismaRepository', () => {
     });
   });
 
-  describe('findMany()', () => {
+  describe('update()', () => {
     const updateMemberPayload: UpdateMemberType = {
       cpf: memberMock.cpf,
       email: memberMock.email,
@@ -178,10 +178,10 @@ describe('MemberPrismaRepository', () => {
 
       expect.assertions(2);
 
-      const member = await sut.update(memberMock.id, updateMemberPayload);
+      const updatedMember = await sut.update(memberMock.id, updateMemberPayload);
 
-      expect(member).toEqual(memberMock);
-      expect(member).toBeInstanceOf(Member);
+      expect(updatedMember).toEqual(memberMock);
+      expect(updatedMember).toBeInstanceOf(Member);
     });
 
     it('should throw a member already registred exception when member email is already registred', async () => {
