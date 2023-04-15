@@ -5,11 +5,16 @@
       "name": "Docker: Attach to Node",
       "type": "node",
       "request": "attach",
+      "address": "0.0.0.0",
       "port": 9229,
       "localRoot": "${workspaceFolder}",
       "remoteRoot": "/app",
+      "protocol": "inspector",
       "restart": true,
-      "protocol": "inspector"
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**",
+        "<node_internals>/**"
+      ]
     }
   ]
 }
