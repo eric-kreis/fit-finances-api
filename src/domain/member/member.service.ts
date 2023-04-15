@@ -5,7 +5,7 @@ export abstract class MemberService {
 
   public abstract findById(id: string): Promise<Member>;
 
-  public abstract findByCPF(cpf: string): Promise<Member>;
+  public abstract findByCpf(cpf: string): Promise<Member>;
 
   public abstract findByEmail(email: string): Promise<Member>;
 
