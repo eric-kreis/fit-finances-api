@@ -1,4 +1,4 @@
-import { DomainErrorCode } from './domain-error-code.enum';
+import { DomainErrorCode } from './enums';
 
 export abstract class DomainException extends Error {
   abstract readonly code: DomainErrorCode;
