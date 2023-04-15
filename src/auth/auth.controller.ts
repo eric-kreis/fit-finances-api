@@ -2,6 +2,7 @@ import { Controller, Post, Body, UseGuards, Get, Request } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Manager } from '@domain/manager/manager';
 import { NotFoundSwagger, SuccessSwagger, UnauthorizedSwagger } from '@swagger/responses';
+import { createDocDescription } from '@swagger/utils';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { AuthUserEntity } from './entities/auth-user.entity';
@@ -14,7 +15,14 @@ export class AuthController {
 
   @ApiOperation({
     summary: 'Autentique um usuário',
-    description: 'Este recurso deve ser utilizado para autenticar um usuário',
+    description: createDocDescription(
+      'Utilize este recurso para autenticar um usuário com email e senha',
+      {
+        field: 'email',
+        constrain: 'deve ser um email com a sintaxe correta',
+        required: true,
+      },
+    ),
   })
   @SuccessSwagger({
     type: AuthUserEntity,
@@ -29,7 +37,9 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Receba o usuário autenticado e renove o token',
-    description: 'Utilize este recurso para autenticar um usuário a partir do token de acesso obtido previamente',
+    description: createDocDescription(
+      'Utilize este recurso para autenticar um usuário a partir do token de acesso obtido previamente',
+    ),
   })
   @SuccessSwagger({
     type: AuthUserEntity,
