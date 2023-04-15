@@ -15,3 +15,8 @@ export enum DomainErrorCode {
   // CashflowSummary (domain 4) exceptions
   CashflowSummaryNotFound = 4404,
 }
+
+export enum DomainSortOrder {
+  asc = 'asc',
+  desc = 'desc',
+}
