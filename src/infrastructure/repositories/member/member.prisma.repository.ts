@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { DomainSortOrder } from '@domain/enums';
 import { Member } from '@domain/member/member';
 import { MemberRepository } from '@domain/member/member.repository';
 import { MemberAlreadyRegistredException } from '@domain/member/exceptions/member-already-registred.exception';
@@ -39,18 +38,18 @@ export class MemberPrismaRepository extends MemberRepository {
   }
 
   public async findMany({
-    page = 0,
-    limit = 10,
-    orderBy = 'createdAt',
-    sort = DomainSortOrder.asc,
-    serach,
+    page,
+    limit,
+    orderBy,
+    sort,
+    search,
   }: MemberPaginationType): Promise<Member[]> {
     const where: Prisma.MemberWhereInput = {};
 
-    if (serach) {
+    if (search) {
       where.OR = [
-        { email: { contains: serach } },
-        { cpf: { contains: serach } },
+        { email: { contains: search } },
+        { cpf: { contains: search } },
       ];
     }
 

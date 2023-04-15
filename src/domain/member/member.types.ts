@@ -8,7 +8,7 @@ export type CreateMemberType = Omit<Member, 'id' | 'createdAt' | 'updatedAt' | '
 export type UpdateMemberType = Partial<CreateMemberType>;
 
 export type MemberPaginationType = PaginationType<Member> & {
-  serach?: string;
+  search?: string;
 };
 
 export type FindOneMemberType = {

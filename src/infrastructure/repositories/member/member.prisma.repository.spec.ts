@@ -98,21 +98,8 @@ describe('MemberPrismaRepository', () => {
         limit: 10,
         orderBy: 'createdAt',
         sort: DomainSortOrder.desc,
-        serach: '@gmail.com',
+        search: '@gmail.com',
       });
-
-      expect(members).toEqual(membersMock);
-      members.forEach((member) => {
-        expect(member).toBeInstanceOf(Member);
-      });
-    });
-
-    it('should return members when optional parameters are not given', async () => {
-      prismaService.member.findMany.mockResolvedValue(membersMock);
-
-      expect.assertions(2);
-
-      const members = await sut.findMany({});
 
       expect(members).toEqual(membersMock);
       members.forEach((member) => {

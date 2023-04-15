@@ -16,5 +16,5 @@ export class MemberPaginationDto extends PaginationDto<Member> implements Member
 
   @IsOptional()
   @IsNotEmpty()
-  serach?: string;
+  search?: string;
 }
