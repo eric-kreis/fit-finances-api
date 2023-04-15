@@ -42,7 +42,10 @@ export class MemberService extends DomainMemberService {
   }
 
   public async update(id: string, paylaod: UpdateMemberDto): Promise<Member> {
-    throw new Error('Method not implemented.');
+    const member = await this._memberRepository.findOne({ id });
+    if (!member) throw new MemberNotFoundException();
+
+    return this._memberRepository.update(id, paylaod);
   }
 
   public async delete(id: string): Promise<Member> {
