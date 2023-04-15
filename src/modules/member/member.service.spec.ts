@@ -1,6 +1,7 @@
 import { DeepMockProxy, mockDeep, mockReset } from 'jest-mock-extended';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MemberRepository } from '@domain/member/member.repository';
+import { memberMock } from '@mocks/member.mock';
 import { MemberService } from './member.service';
 
 const memberRepositoryMock = mockDeep<MemberRepository>();
@@ -37,5 +38,18 @@ describe('MemberService', () => {
     expect(sut.findByEmail).toBeDefined();
     expect(sut.update).toBeDefined();
     expect(sut.delete).toBeDefined();
+  });
+
+  describe('create()', () => {
+    it('should return a new member', async () => {
+      memberRepository.create.mockResolvedValue(memberMock);
+
+      expect.assertions(2);
+
+      const member = await sut.create(memberMock);
+
+      expect(memberRepository.create).toHaveBeenCalledTimes(1);
+      expect(member).toEqual(memberMock);
+    });
   });
 });
