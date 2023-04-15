@@ -107,4 +107,48 @@ describe('MemberPrismaRepository', () => {
       });
     });
   });
+
+  describe('findOne()', () => {
+    it('should return a member searching by: id, email or cpf', async () => {
+      prismaService.member.findUnique.mockResolvedValue(memberMock);
+
+      expect.assertions(6);
+
+      // Querying by ID;
+      let member = await sut.findOne({
+        id: memberMock.id,
+      });
+
+      expect(member).toEqual(memberMock);
+      expect(member).toBeInstanceOf(Member);
+
+      // Querying by email;
+      member = await sut.findOne({
+        email: memberMock.email,
+      });
+
+      expect(member).toEqual(memberMock);
+      expect(member).toBeInstanceOf(Member);
+
+      // Querying by cpf;
+      member = await sut.findOne({
+        cpf: memberMock.cpf,
+      });
+
+      expect(member).toEqual(memberMock);
+      expect(member).toBeInstanceOf(Member);
+    });
+
+    it('should throw an exception with "Error: findOne needs at least one key to search" when no parameter is passed', async () => {
+      expect.assertions(3);
+
+      try {
+        await sut.findOne({});
+      } catch (e) {
+        expect(e).toBeDefined();
+        expect(e).toBeInstanceOf(Error);
+        expect((e as Error).message).toBe('Error: findOne needs at least one key to search');
+      }
+    });
+  });
 });
