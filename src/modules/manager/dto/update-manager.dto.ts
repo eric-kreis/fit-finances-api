@@ -3,12 +3,12 @@ import { OptionalUndefined } from '@shared/decorators/validators/optional-undefi
 import { IsEmail, IsString, MinLength } from 'class-validator';
 
 export class UpdateManagerDto {
-  @ApiPropertyOptional({ description: 'Manager email' })
+  @ApiPropertyOptional({ description: 'Email do gestor' })
   @OptionalUndefined()
   @IsEmail()
   email?: string;
 
-  @ApiPropertyOptional({ description: 'Manager password', minLength: 8 })
+  @ApiPropertyOptional({ description: 'Senha do gestor', minLength: 8 })
   @OptionalUndefined()
   @IsString()
   @MinLength(8)
