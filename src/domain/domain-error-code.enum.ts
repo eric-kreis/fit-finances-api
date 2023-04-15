@@ -1,6 +1,7 @@
 export enum DomainErrorCode {
   // Manager (domain 1) exceptions
   ManagerUnauthorized = 1401,
+  ManagerForbidden = 1403,
   ManagerNotFound = 1404,
   ManagerAlreadyRegistred = 1409,
 
