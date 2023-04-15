@@ -105,6 +105,10 @@ export class MemberPrismaRepository extends MemberRepository {
   }
 
   public async delete(id: string): Promise<Member> {
-    throw new Error('Method not implemented.');
+    const member = await this._prismaService.member.delete({
+      where: { id },
+    });
+
+    return new Member(member);
   }
 }
