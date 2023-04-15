@@ -93,7 +93,7 @@ describe('MemberPrismaRepository', () => {
 
       expect.assertions(2);
 
-      const member = await sut.findMany({
+      const members = await sut.findMany({
         page: 0,
         limit: 10,
         orderBy: 'createdAt',
@@ -101,8 +101,10 @@ describe('MemberPrismaRepository', () => {
         serach: '@gmail.com',
       });
 
-      expect(member).toEqual(membersMock);
-      expect(member).toBeInstanceOf(Member);
+      expect(members).toEqual(membersMock);
+      members.forEach((member) => {
+        expect(member).toBeInstanceOf(Member);
+      });
     });
   });
 });
