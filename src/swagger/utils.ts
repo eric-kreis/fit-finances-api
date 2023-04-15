@@ -13,5 +13,5 @@ ${constrains.map(({ field, constrain, required }) => `<li>"${field}${required ? 
 `;
 
 export const createDocDescription = (text: string, ...constrains: IConstrain[]) => (
-  text + createDocContrains(...constrains)
+  text + constrains.length ? createDocContrains(...constrains) : ''
 );
