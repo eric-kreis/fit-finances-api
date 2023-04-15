@@ -1,7 +1,7 @@
 import { Controller, Post, Body, UseGuards, Get, Request } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Manager } from '@domain/manager/manager';
-import { SuccessSwagger, UnauthorizedSwagger } from '@swagger/responses';
+import { NotFoundSwagger, SuccessSwagger, UnauthorizedSwagger } from '@swagger/responses';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { AuthUserEntity } from './entities/auth-user.entity';
@@ -14,9 +14,13 @@ export class AuthController {
 
   @ApiOperation({
     summary: 'Autentique um usuário',
-    description: 'Este recurso deve ser utilizado para autenticar um usuário (administrador)',
+    description: 'Este recurso deve ser utilizado para autenticar um usuário',
   })
-  @SuccessSwagger(AuthUserEntity)
+  @SuccessSwagger({
+    type: AuthUserEntity,
+    description: 'Usuário autenticado com sucesso',
+  })
+  @NotFoundSwagger()
   @Post('login')
   public async login(@Body() createAuthDto: LoginDto): Promise<AuthUserEntity> {
     return this._authService.login(createAuthDto);
@@ -25,11 +29,12 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Receba o usuário autenticado e renove o token',
-    description: `Este recurso recebe um token (obtido previamente).
-    Em caso de sucesso, retornará o usuário (autenticado previamente) e um novo token (utilizado para prolongar o tempo de autenticação).
-    `,
+    description: 'Utilize este recurso para autenticar um usuário a partir do token de acesso obtido previamente',
   })
-  @SuccessSwagger(AuthUserEntity)
+  @SuccessSwagger({
+    type: AuthUserEntity,
+    description: 'Usuário autenticado com sucesso',
+  })
   @UnauthorizedSwagger()
   @UseGuards(JwtAuthGuard)
   @Get('profile')
