@@ -1,8 +1,10 @@
 import { Member } from './member';
-import { CreateMemberType, UpdateMemberType } from './member.types';
+import { CreateMemberType, MemberPaginationType, UpdateMemberType } from './member.types';
 
 export abstract class MemberService {
   public abstract create(data: CreateMemberType): Promise<Member>;
+
+  public abstract findMany(query: MemberPaginationType): Promise<Member[]>;
 
   public abstract findById(id: string): Promise<Member>;
 
