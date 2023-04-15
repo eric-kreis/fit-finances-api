@@ -154,4 +154,34 @@ describe('MemberService', () => {
       }
     });
   });
+
+  describe('update()', () => {
+    it('should return an updated member', async () => {
+      memberRepository.findOne.mockResolvedValue(memberMock);
+      memberRepository.update.mockResolvedValue(memberMock);
+
+      expect.assertions(3);
+
+      const updatedMember = await sut.update(memberMock.id, memberMock);
+
+      expect(memberRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(memberRepository.update).toHaveBeenCalledTimes(1);
+      expect(updatedMember).toEqual(memberMock);
+    });
+
+    it('should throw a member not found exception', async () => {
+      memberRepository.findOne.mockResolvedValue(null);
+
+      expect.assertions(4);
+
+      try {
+        await sut.update(memberMock.id, memberMock);
+      } catch (e) {
+        expect(memberRepository.findOne).toHaveBeenCalledTimes(1);
+        expect(memberRepository.update).toHaveBeenCalledTimes(0);
+        expect(e).toBeDefined();
+        expect(e).toBeInstanceOf(MemberNotFoundException);
+      }
+    });
+  });
 });
