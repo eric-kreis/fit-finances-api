@@ -1,10 +1,10 @@
 import { Member } from '@domain/member/member';
 import { MemberRepository } from '@domain/member/member.repository';
 import { MemberService as DomainMemberService } from '@domain/member/member.service';
-import { MemberPaginationType } from '@domain/member/member.types';
 import { Injectable } from '@nestjs/common';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
+import { MemberPaginationDto } from './dto/member-pagination.dto';
 
 @Injectable()
 export class MemberService extends DomainMemberService {
@@ -18,7 +18,7 @@ export class MemberService extends DomainMemberService {
     return this._memberRepository.create(data);
   }
 
-  public findMany(query: MemberPaginationType): Promise<Member[]> {
+  public async findMany(query: MemberPaginationDto): Promise<Member[]> {
     throw new Error('Method not implemented.');
   }
 
