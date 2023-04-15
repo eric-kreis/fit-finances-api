@@ -2,6 +2,7 @@ import { DeepMockProxy, mockDeep, mockReset } from 'jest-mock-extended';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DomainSortOrder } from '@domain/enums';
 import { MemberRepository } from '@domain/member/member.repository';
+import { MemberNotFoundException } from '@domain/member/exceptions/member-not-found.exception';
 import { memberMock, membersMock } from '@mocks/member.mock';
 import { MemberService } from './member.service';
 
@@ -70,6 +71,87 @@ describe('MemberService', () => {
 
       expect(memberRepository.findMany).toHaveBeenCalledTimes(1);
       expect(members).toEqual(membersMock);
+    });
+  });
+
+  describe('findById()', () => {
+    it('should return a member', async () => {
+      memberRepository.findOne.mockResolvedValue(memberMock);
+
+      expect.assertions(2);
+
+      const member = await sut.findById(memberMock.id);
+
+      expect(memberRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(member).toEqual(memberMock);
+    });
+
+    it('should throw a member not found exception', async () => {
+      memberRepository.findOne.mockResolvedValue(memberMock);
+
+      expect.assertions(3);
+
+      try {
+        await sut.findById(memberMock.id);
+      } catch (e) {
+        expect(memberRepository.findOne).toHaveBeenCalledTimes(1);
+        expect(e).toBeDefined();
+        expect(e).toBeInstanceOf(MemberNotFoundException);
+      }
+    });
+  });
+
+  describe('findByCpf()', () => {
+    it('should return a member', async () => {
+      memberRepository.findOne.mockResolvedValue(memberMock);
+
+      expect.assertions(2);
+
+      const member = await sut.findByCpf(memberMock.cpf);
+
+      expect(memberRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(member).toEqual(memberMock);
+    });
+
+    it('should throw a member not found exception', async () => {
+      memberRepository.findOne.mockResolvedValue(memberMock);
+
+      expect.assertions(3);
+
+      try {
+        await sut.findByCpf(memberMock.cpf);
+      } catch (e) {
+        expect(memberRepository.findOne).toHaveBeenCalledTimes(1);
+        expect(e).toBeDefined();
+        expect(e).toBeInstanceOf(MemberNotFoundException);
+      }
+    });
+  });
+
+  describe('findByEmail()', () => {
+    it('should return a member', async () => {
+      memberRepository.findOne.mockResolvedValue(memberMock);
+
+      expect.assertions(2);
+
+      const member = await sut.findByEmail(memberMock.email);
+
+      expect(memberRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(member).toEqual(memberMock);
+    });
+
+    it('should throw a member not found exception', async () => {
+      memberRepository.findOne.mockResolvedValue(memberMock);
+
+      expect.assertions(3);
+
+      try {
+        await sut.findByEmail(memberMock.email);
+      } catch (e) {
+        expect(memberRepository.findOne).toHaveBeenCalledTimes(1);
+        expect(e).toBeDefined();
+        expect(e).toBeInstanceOf(MemberNotFoundException);
+      }
     });
   });
 });
