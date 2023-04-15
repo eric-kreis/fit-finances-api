@@ -87,7 +87,7 @@ describe('MemberService', () => {
     });
 
     it('should throw a member not found exception', async () => {
-      memberRepository.findOne.mockResolvedValue(memberMock);
+      memberRepository.findOne.mockResolvedValue(null);
 
       expect.assertions(3);
 
@@ -114,7 +114,7 @@ describe('MemberService', () => {
     });
 
     it('should throw a member not found exception', async () => {
-      memberRepository.findOne.mockResolvedValue(memberMock);
+      memberRepository.findOne.mockResolvedValue(null);
 
       expect.assertions(3);
 
@@ -141,7 +141,7 @@ describe('MemberService', () => {
     });
 
     it('should throw a member not found exception', async () => {
-      memberRepository.findOne.mockResolvedValue(memberMock);
+      memberRepository.findOne.mockResolvedValue(null);
 
       expect.assertions(3);
 
