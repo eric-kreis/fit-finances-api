@@ -10,7 +10,7 @@ export type MemberPaginationType = PaginationType<Member> & {
 };
 
 export type FindOneMemberType = {
-  id: string;
-  email: string;
-  cpf: string;
+  id?: string;
+  email?: string;
+  cpf?: string;
 };
