@@ -31,6 +31,7 @@ export class MemberPrismaRepository extends MemberRepository {
         cpf: data.cpf,
         email: data.email,
         name: data.name,
+        phoneNumber: data.phoneNumber,
       },
     });
 
