@@ -1,4 +1,4 @@
-import { Manager } from '@prisma/client';
+import { Manager } from './manager';
 
 export type CreateManagerType = Omit<Manager, 'id' | 'createdAt' | 'updatedAt'> & { password: string };
 
