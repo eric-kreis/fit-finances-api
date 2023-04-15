@@ -73,7 +73,35 @@ export class MemberPrismaRepository extends MemberRepository {
   }
 
   public async update(id: string, payload: UpdateMemberType): Promise<Member> {
-    throw new Error('Method not implemented.');
+    if (payload.email) {
+      const memberWithEmail = await this._prismaService.member.findUnique({
+        where: { email: payload.email },
+      });
+
+      if (memberWithEmail && memberWithEmail.id !== id) throw new MemberAlreadyRegistredException();
+    }
+
+    if (payload.cpf) {
+      const memberWithCpf = await this._prismaService.member.findUnique({
+        where: { cpf: payload.cpf },
+      });
+
+      if (memberWithCpf && memberWithCpf.id !== id) throw new MemberAlreadyRegistredException();
+    }
+
+    const updateMemberData: Prisma.MemberUpdateInput = {
+      cpf: payload.cpf,
+      email: payload.email,
+      name: payload.name,
+      phoneNumber: payload.phoneNumber,
+    };
+
+    const updatedMember = await this._prismaService.member.update({
+      where: { id },
+      data: updateMemberData,
+    });
+
+    return new Member(updatedMember);
   }
 
   public async delete(id: string): Promise<Member> {
