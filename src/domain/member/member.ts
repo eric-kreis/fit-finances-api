@@ -19,6 +19,7 @@ export class Member {
     this.updatedAt = member.updatedAt;
     this.cpf = member.cpf;
     this.email = member.email;
+    this.name = member.name;
     this.phoneNumber = member.phoneNumber;
   }
 }
