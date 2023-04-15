@@ -1,9 +1,10 @@
 import { DeepMockProxy } from 'jest-mock-extended';
 import { Test, TestingModule } from '@nestjs/testing';
+import { DomainSortOrder } from '@domain/enums';
 import { CreateMemberType } from '@domain/member/member.types';
 import { Member } from '@domain/member/member';
 import { prismaMock } from '@mocks/prisma/singleton';
-import { memberMock } from '@mocks/member.mock';
+import { memberMock, membersMock } from '@mocks/member.mock';
 import { MemberAlreadyRegistredException } from '@domain/member/exceptions/member-already-registred.exception';
 import { PrismaService } from '../../prisma.service';
 import { MemberPrismaRepository } from './member.prisma.repository';
@@ -83,6 +84,25 @@ describe('MemberPrismaRepository', () => {
         expect(e).toBeDefined();
         expect(e).toBeInstanceOf(MemberAlreadyRegistredException);
       }
+    });
+  });
+
+  describe('findMany()', () => {
+    it('should return members', async () => {
+      prismaService.member.findMany.mockResolvedValue(membersMock);
+
+      expect.assertions(2);
+
+      const member = await sut.findMany({
+        page: 0,
+        limit: 10,
+        orderBy: 'createdAt',
+        sort: DomainSortOrder.desc,
+        serach: '@gmail.com',
+      });
+
+      expect(member).toEqual(membersMock);
+      expect(member).toBeInstanceOf(Member);
     });
   });
 });
