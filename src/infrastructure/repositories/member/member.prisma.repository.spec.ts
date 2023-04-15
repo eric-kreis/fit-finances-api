@@ -186,7 +186,7 @@ describe('MemberPrismaRepository', () => {
 
     it('should throw a member already registred exception when member email is already registred', async () => {
       // email already registred
-      prismaService.member.findUnique.mockResolvedValueOnce(memberMock);
+      prismaService.member.findUnique.mockResolvedValueOnce({ ...memberMock, id: 'id' });
 
       expect.assertions(2);
 
@@ -202,7 +202,7 @@ describe('MemberPrismaRepository', () => {
       // email not registred
       prismaService.member.findUnique.mockResolvedValueOnce(null);
       // cpf already registred
-      prismaService.member.findUnique.mockResolvedValueOnce(memberMock);
+      prismaService.member.findUnique.mockResolvedValueOnce({ ...memberMock, id: 'id' });
 
       expect.assertions(2);
 
