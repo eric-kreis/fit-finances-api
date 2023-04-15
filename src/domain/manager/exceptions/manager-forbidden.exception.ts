@@ -1,5 +1,5 @@
-import { DomainErrorCode } from '@domain/domain-error-code.enum';
 import { DomainException } from '@domain/domain.exception';
+import { DomainErrorCode } from '@domain/enums';
 
 export class ManagerForbiddenException extends DomainException {
   code = DomainErrorCode.ManagerForbidden;
