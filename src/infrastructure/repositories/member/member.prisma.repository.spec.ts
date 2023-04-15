@@ -1,7 +1,7 @@
 import { DeepMockProxy } from 'jest-mock-extended';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DomainSortOrder } from '@domain/enums';
-import { CreateMemberType } from '@domain/member/member.types';
+import { CreateMemberType, UpdateMemberType } from '@domain/member/member.types';
 import { Member } from '@domain/member/member';
 import { prismaMock } from '@mocks/prisma/singleton';
 import { memberMock, membersMock } from '@mocks/member.mock';
@@ -161,6 +161,56 @@ describe('MemberPrismaRepository', () => {
         expect(e).toBeDefined();
         expect(e).toBeInstanceOf(Error);
         expect((e as Error).message).toBe('Error: findOne needs at least one key to search');
+      }
+    });
+  });
+
+  describe('findMany()', () => {
+    const updateMemberPayload: UpdateMemberType = {
+      cpf: memberMock.cpf,
+      email: memberMock.email,
+      name: memberMock.name,
+      phoneNumber: memberMock.phoneNumber,
+    };
+
+    it('should return an updated member', async () => {
+      prismaService.member.update.mockResolvedValue(memberMock);
+
+      expect.assertions(2);
+
+      const member = await sut.update(memberMock.id, updateMemberPayload);
+
+      expect(member).toEqual(memberMock);
+      expect(member).toBeInstanceOf(Member);
+    });
+
+    it('should throw a member already registred exception when member email is already registred', async () => {
+      // email already registred
+      prismaService.member.findUnique.mockResolvedValueOnce(memberMock);
+
+      expect.assertions(2);
+
+      try {
+        await sut.update(memberMock.id, updateMemberPayload);
+      } catch (e) {
+        expect(e).toBeDefined();
+        expect(e).toBeInstanceOf(MemberAlreadyRegistredException);
+      }
+    });
+
+    it('should throw a member already registred exception when member cpf is already registred', async () => {
+      // email not registred
+      prismaService.member.findUnique.mockResolvedValueOnce(null);
+      // cpf already registred
+      prismaService.member.findUnique.mockResolvedValueOnce(memberMock);
+
+      expect.assertions(2);
+
+      try {
+        await sut.update(memberMock.id, updateMemberPayload);
+      } catch (e) {
+        expect(e).toBeDefined();
+        expect(e).toBeInstanceOf(MemberAlreadyRegistredException);
       }
     });
   });
