@@ -139,6 +139,19 @@ describe('MemberPrismaRepository', () => {
       expect(member).toBeInstanceOf(Member);
     });
 
+    it('should return null when no member is found', async () => {
+      prismaService.member.findUnique.mockResolvedValue(null);
+
+      expect.assertions(1);
+
+      // Querying by ID;
+      const member = await sut.findOne({
+        email: memberMock.email,
+      });
+
+      expect(member).toBeNull();
+    });
+
     it('should throw an exception with "Error: findOne needs at least one key to search" when no parameter is passed', async () => {
       expect.assertions(3);
 
