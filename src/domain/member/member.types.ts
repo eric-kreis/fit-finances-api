@@ -1,7 +1,9 @@
 import { PaginationType } from '@domain/types';
 import { Member } from './member';
 
-export type CreateMemberType = Omit<Member, 'id' | 'createdAt' | 'updatedAt'>;
+export type CreateMemberType = Omit<Member, 'id' | 'createdAt' | 'updatedAt' | 'phoneNumber'> & {
+  phoneNumber?: string | null;
+};
 
 export type UpdateMemberType = Partial<CreateMemberType>;
 
