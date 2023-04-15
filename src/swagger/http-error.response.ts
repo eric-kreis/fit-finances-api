@@ -1,7 +1,7 @@
 import { DomainErrorCode } from '@domain/domain-error-code.enum';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class HttpException {
+export class HttpErrorResponse {
   @ApiProperty()
   statusCode: number;
 

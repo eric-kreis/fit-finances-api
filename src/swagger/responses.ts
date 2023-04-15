@@ -1,6 +1,7 @@
 import { ApiResponse } from '@nestjs/swagger';
 import { HttpStatus, Type } from '@nestjs/common';
-import { BadRequestException } from './bad-request.exception';
+import { BadRequestResponse } from './bad-request.response';
+import { HttpErrorResponse } from './http-error.response';
 
 export const SuccessSwagger = (type: Type<unknown>) => ApiResponse({
   type,
@@ -8,12 +9,13 @@ export const SuccessSwagger = (type: Type<unknown>) => ApiResponse({
 });
 
 export const BadRequestSwagger = () => ApiResponse({
-  type: BadRequestException,
+  type: BadRequestResponse,
   status: HttpStatus.BAD_REQUEST,
+  description: 'Requisição inválida (sintaxe mal formatada ou valores enviados não aceitos pelo servidor)',
 });
 
 export const UnauthorizedSwagger = () => ApiResponse({
-  type: BadRequestException,
+  type: HttpErrorResponse,
   status: HttpStatus.UNAUTHORIZED,
-  description: 'Expired or invalid access token',
+  description: 'Token de acesso invalidado ou expirado',
 });

@@ -3,11 +3,14 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthUserEntity {
   @ApiProperty({
-    description: 'Access token to authenticate current user',
+    description: 'Token de acesso',
   })
   public readonly accessToken: string;
 
-  @ApiProperty({ type: ManagerEntity })
+  @ApiProperty({
+    type: ManagerEntity,
+    description: 'Usuário autenticado',
+  })
   public readonly user: ManagerEntity;
 
   constructor(accessToken: string, user: ManagerEntity) {
