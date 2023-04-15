@@ -31,4 +31,54 @@ describe('MemberPrismaRepository', () => {
     expect(sut.update).toBeDefined();
     expect(sut.delete).toBeDefined();
   });
+
+  describe('create()', () => {
+    const createMemberData: CreateMemberType = {
+      cpf: memberMock.cpf,
+      email: memberMock.email,
+      name: memberMock.name,
+      phoneNumber: memberMock.phoneNumber,
+    };
+
+    it('should return a new member', async () => {
+      prismaService.member.create.mockResolvedValue(memberMock);
+
+      expect.assertions(2);
+
+      const member = await sut.create(createMemberData);
+
+      expect(member).toEqual(memberMock);
+      expect(member).toBeInstanceOf(Member);
+    });
+
+    it('should throw a member already registred exception when email is already registred', async () => {
+      // email already registred
+      prismaService.member.findUnique.mockResolvedValueOnce(memberMock);
+
+      expect.assertions(2);
+
+      try {
+        await sut.create(createMemberData);
+      } catch (e) {
+        expect(e).toBeDefined();
+        expect(e).toBeInstanceOf(MemberAlreadyRegistredException);
+      }
+    });
+
+    it('should throw a member already registred exception when cpf is already registred', async () => {
+      // email not registred
+      prismaService.member.findUnique.mockResolvedValueOnce(null);
+      // cpf already registred
+      prismaService.member.findUnique.mockResolvedValueOnce(memberMock);
+
+      expect.assertions(2);
+
+      try {
+        await sut.create(createMemberData);
+      } catch (e) {
+        expect(e).toBeDefined();
+        expect(e).toBeInstanceOf(MemberAlreadyRegistredException);
+      }
+    });
+  });
 });
