@@ -35,8 +35,30 @@ export class MemberPrismaRepository extends MemberRepository {
     return new Member(newMember);
   }
 
-  public async findMany(query: MemberPaginationType): Promise<Member[]> {
-    throw new Error('Method not implemented.');
+  public async findMany({
+    page = 0,
+    limit = 10,
+    orderBy = 'createdAt',
+    sort = DomainSortOrder.asc,
+    serach,
+  }: MemberPaginationType): Promise<Member[]> {
+    const where: Prisma.MemberWhereInput = {};
+
+    if (serach) {
+      where.OR = [
+        { email: { contains: serach } },
+        { cpf: { contains: serach } },
+      ];
+    }
+
+    const members = await this._prismaService.member.findMany({
+      where,
+      skip: page * limit,
+      take: limit,
+      orderBy: { [orderBy]: sort },
+    });
+
+    return members.map((member) => new Member(member));
   }
 
   public async findOne(query: FindOneMemberType): Promise<Member | null> {
