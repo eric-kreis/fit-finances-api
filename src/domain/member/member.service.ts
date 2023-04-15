@@ -12,7 +12,7 @@ export abstract class MemberService {
 
   public abstract findByEmail(email: string): Promise<Member>;
 
-  public abstract update(id: string, paylaod: UpdateMemberType): Promise<Member>;
+  public abstract update(id: string, payload: UpdateMemberType): Promise<Member>;
 
   public abstract delete(id: string): Promise<Member>;
 }
