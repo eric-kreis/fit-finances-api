@@ -19,7 +19,7 @@ export class MemberService extends DomainMemberService {
   }
 
   public async findMany(query: MemberPaginationDto): Promise<Member[]> {
-    throw new Error('Method not implemented.');
+    return this._memberRepository.findMany(query);
   }
 
   public async findById(id: string): Promise<Member> {
