@@ -9,7 +9,9 @@ export class Member {
 
   public readonly email: string;
 
-  public readonly phoneNumber?: string;
+  public readonly name: string;
+
+  public readonly phoneNumber: string | null;
 
   constructor(member: Member) {
     this.id = member.id;
