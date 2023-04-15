@@ -1,6 +1,10 @@
 import { DeepMockProxy } from 'jest-mock-extended';
 import { Test, TestingModule } from '@nestjs/testing';
+import { CreateMemberType } from '@domain/member/member.types';
+import { Member } from '@domain/member/member';
 import { prismaMock } from '@mocks/prisma/singleton';
+import { memberMock } from '@mocks/member.mock';
+import { MemberAlreadyRegistredException } from '@domain/member/exceptions/member-already-registred.exception';
 import { PrismaService } from '../../prisma.service';
 import { MemberPrismaRepository } from './member.prisma.repository';
 
