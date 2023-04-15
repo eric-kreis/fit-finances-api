@@ -214,4 +214,17 @@ describe('MemberPrismaRepository', () => {
       }
     });
   });
+
+  describe('delete()', () => {
+    it('should return the deleted member', async () => {
+      prismaService.member.delete.mockResolvedValue(memberMock);
+
+      expect.assertions(2);
+
+      const deletedMember = await sut.delete(memberMock.id);
+
+      expect(deletedMember).toEqual(memberMock);
+      expect(deletedMember).toBeInstanceOf(Member);
+    });
+  });
 });
