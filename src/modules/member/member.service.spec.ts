@@ -1,7 +1,8 @@
 import { DeepMockProxy, mockDeep, mockReset } from 'jest-mock-extended';
 import { Test, TestingModule } from '@nestjs/testing';
+import { DomainSortOrder } from '@domain/enums';
 import { MemberRepository } from '@domain/member/member.repository';
-import { memberMock } from '@mocks/member.mock';
+import { memberMock, membersMock } from '@mocks/member.mock';
 import { MemberService } from './member.service';
 
 const memberRepositoryMock = mockDeep<MemberRepository>();
@@ -50,6 +51,25 @@ describe('MemberService', () => {
 
       expect(memberRepository.create).toHaveBeenCalledTimes(1);
       expect(member).toEqual(memberMock);
+    });
+  });
+
+  describe('findMany()', () => {
+    it('should return members', async () => {
+      memberRepository.findMany.mockResolvedValue(membersMock);
+
+      expect.assertions(2);
+
+      const members = await sut.findMany({
+        page: 0,
+        limit: 10,
+        orderBy: 'createdAt',
+        sort: DomainSortOrder.asc,
+        search: '@gmail.com',
+      });
+
+      expect(memberRepository.findMany).toHaveBeenCalledTimes(1);
+      expect(members).toEqual(membersMock);
     });
   });
 });
