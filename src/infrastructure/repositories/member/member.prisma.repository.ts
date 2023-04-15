@@ -61,8 +61,13 @@ export class MemberPrismaRepository extends MemberRepository {
     return members.map((member) => new Member(member));
   }
 
-  public async findOne(query: FindOneMemberType): Promise<Member | null> {
-    throw new Error('Method not implemented.');
+  public async findOne({ id, email, cpf }: FindOneMemberType): Promise<Member | null> {
+    if (!id && !email && !cpf) throw new Error('Error: findOne needs at least one key to search');
+
+    const member = await this._prismaService.member.findUnique({ where: { id, email, cpf } });
+    if (!member) return member;
+
+    return new Member(member);
   }
 
   public async update(id: string, payload: Partial<CreateMemberType>): Promise<Member> {
