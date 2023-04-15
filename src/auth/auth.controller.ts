@@ -14,9 +14,7 @@ export class AuthController {
 
   @ApiOperation({
     summary: 'Autentique um usuário',
-    description: `
-    Este recurso deve ser utilizado para autenticar um usuário (administrador).
-    `,
+    description: 'Este recurso deve ser utilizado para autenticar um usuário (administrador)',
   })
   @SuccessSwagger(AuthUserEntity)
   @Post('login')
