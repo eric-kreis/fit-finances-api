@@ -1,14 +1,18 @@
 import { Module } from '@nestjs/common';
 import { ManagerRepositoryModule } from '@infrastructure/repositories/manager/manager.repository.module';
-import { ManagerService } from './manager.service';
+import { ManagerService as DomainManagerService } from '@domain/manager/manager.service';
 import { ManagerController } from './manager.controller';
+import { ManagerService } from './manager.service';
 
 @Module({
   imports: [ManagerRepositoryModule],
   controllers: [ManagerController],
   providers: [
-    ManagerService,
+    {
+      provide: DomainManagerService,
+      useClass: ManagerService,
+    },
   ],
-  exports: [ManagerService],
+  exports: [DomainManagerService],
 })
 export class ManagerModule {}
