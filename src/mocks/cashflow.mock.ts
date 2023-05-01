@@ -41,22 +41,24 @@ export const prismaOutflowMock: PrismaCashflow & { tags: CashflowTag[] } = {
   type: CashflowType.OUTFLOW,
 };
 
+export const prismaCashflowsMock: PrismaCashflow[] = [prismaInflowMock, prismaOutflowMock];
+
 export const inflowMock: Inflow = {
-  id: faker.database.mongodbObjectId(),
-  createdAt: new Date(),
-  effectiveDate: new Date(),
-  amount: +faker.commerce.price(),
-  description: faker.lorem.paragraph(),
+  id: prismaInflowMock.id,
+  createdAt: prismaInflowMock.createdAt,
+  effectiveDate: prismaInflowMock.effectiveDate,
+  amount: prismaInflowMock.amount,
+  description: prismaInflowMock.description,
   tags: [prismaInflowTagMock.name],
   type: CashflowType.INFLOW,
 };
 
 export const outflowMock: Outflow = {
-  id: faker.database.mongodbObjectId(),
-  createdAt: new Date(),
-  effectiveDate: new Date(),
-  amount: +faker.commerce.price(),
-  description: faker.lorem.paragraph(),
+  id: prismaOutflowMock.id,
+  createdAt: prismaOutflowMock.createdAt,
+  effectiveDate: prismaOutflowMock.effectiveDate,
+  amount: prismaOutflowMock.amount,
+  description: prismaOutflowMock.description,
   tags: [prismaOutflowTagMock.name],
   type: CashflowType.OUTFLOW,
 };
