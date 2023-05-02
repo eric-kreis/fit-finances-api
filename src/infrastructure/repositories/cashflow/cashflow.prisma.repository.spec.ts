@@ -1,7 +1,7 @@
 import { DeepMockProxy } from 'jest-mock-extended';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CashflowType } from '@domain/cashflow/cashflow-type.enum';
-import { CreateCashflowType } from '@domain/cashflow/cashflow.types';
+import { CashflowPaginationType, CreateCashflowType } from '@domain/cashflow/cashflow.types';
 import { DomainSortOrder } from '@domain/enums';
 import { prismaMock } from '@mocks/prisma/singleton';
 import {
@@ -127,21 +127,38 @@ describe('CashflowPrismaRepository', () => {
   });
 
   describe('findMany()', () => {
+    const query: CashflowPaginationType = {
+      page: 0,
+      limit: 10,
+      orderBy: 'effectiveDate',
+      sort: DomainSortOrder.asc,
+      search: 'Venda',
+      type: CashflowType.INFLOW,
+    };
+
     it('should return cashflows', async () => {
       prismaService.cashflow.findMany.mockResolvedValue(prismaCashflowsMock);
 
-      expect.assertions(2);
+      expect.assertions(3);
 
-      const cashflows = await sut.findMany({
-        page: 0,
-        limit: 10,
-        orderBy: 'effectiveDate',
-        sort: DomainSortOrder.asc,
-        search: 'Venda',
-        type: CashflowType.INFLOW,
-      });
+      const cashflows = await sut.findMany(query);
 
       expect(prismaService.cashflow.findMany).toHaveBeenCalledTimes(1);
+      expect(prismaService.cashflow.findMany).toHaveBeenCalledWith({
+        where: {
+          type: query.type,
+          OR: [
+            { description: { contains: query.search, mode: 'insensitive' } },
+            { tags: { some: { name: { contains: query.search, mode: 'insensitive' } } } },
+          ],
+        },
+        skip: query.page * query.limit,
+        take: query.limit,
+        orderBy: { effectiveDate: query.sort },
+        include: {
+          tags: true,
+        },
+      });
       expect(cashflows).toEqual(cashflowsMock);
     });
   });
