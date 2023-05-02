@@ -1,8 +1,17 @@
 import { DeepMockProxy } from 'jest-mock-extended';
 import { Test, TestingModule } from '@nestjs/testing';
+import { CashflowType } from '@domain/cashflow/cashflow-type.enum';
 import { CreateCashflowType } from '@domain/cashflow/cashflow.types';
+import { DomainSortOrder } from '@domain/enums';
 import { prismaMock } from '@mocks/prisma/singleton';
-import { inflowMock, outflowMock, prismaInflowMock } from '@mocks/cashflow.mock';
+import {
+  cashflowsMock,
+  inflowMock,
+  outflowMock,
+  prismaCashflowsMock,
+  prismaInflowMock,
+  prismaOutflowMock,
+} from '@mocks/cashflow.mock';
 import { PrismaService } from '../../prisma.service';
 import { CashflowPrismaRepository } from './cashflow.prisma.repository';
 
@@ -84,7 +93,7 @@ describe('CashflowPrismaRepository', () => {
     });
 
     it('should return a new inflow', async () => {
-      prismaService.cashflow.create.mockResolvedValue(prismaInflowMock);
+      prismaService.cashflow.create.mockResolvedValue(prismaOutflowMock);
 
       expect.assertions(3);
 
@@ -125,6 +134,72 @@ describe('CashflowPrismaRepository', () => {
         expect(prismaService.cashflow.create).toHaveBeenCalledTimes(0);
         expect(e).toBeDefined();
       }
+    });
+  });
+
+  describe('findMany()', () => {
+    it('should return cashflows', async () => {
+      prismaService.cashflow.findMany.mockResolvedValue(prismaCashflowsMock);
+
+      expect.assertions(2);
+
+      const cashflows = await sut.findMany({
+        page: 0,
+        limit: 10,
+        orderBy: 'effectiveDate',
+        sort: DomainSortOrder.asc,
+        search: 'Venda',
+        type: CashflowType.INFLOW,
+      });
+
+      expect(prismaService.cashflow.findMany).toHaveBeenCalledTimes(1);
+      expect(cashflows).toEqual(cashflowsMock);
+    });
+  });
+
+  describe('findById()', () => {
+    it('should return a cashflow', async () => {
+      prismaService.cashflow.findUnique.mockResolvedValue(prismaInflowMock);
+
+      expect.assertions(3);
+
+      const inflow = await sut.findById(inflowMock.id);
+
+      expect(prismaService.cashflow.findUnique).toHaveBeenCalledTimes(1);
+      expect(prismaService.cashflow.findUnique).toHaveBeenCalledWith({
+        where: { id: inflowMock.id },
+      });
+      expect(inflow).toEqual(inflowMock);
+    });
+
+    it('should return null', async () => {
+      prismaService.cashflow.findUnique.mockResolvedValue(null);
+
+      expect.assertions(3);
+
+      const inflow = await sut.findById(inflowMock.id);
+
+      expect(prismaService.cashflow.findUnique).toHaveBeenCalledTimes(1);
+      expect(prismaService.cashflow.findUnique).toHaveBeenCalledWith({
+        where: { id: inflowMock.id },
+      });
+      expect(inflow).toEqual(null);
+    });
+  });
+
+  describe('delete()', () => {
+    it('should return the deleted cashflow', async () => {
+      prismaService.cashflow.delete.mockResolvedValue(prismaOutflowMock);
+
+      expect.assertions(3);
+
+      const inflow = await sut.delete(outflowMock.id);
+
+      expect(prismaService.cashflow.delete).toHaveBeenCalledTimes(1);
+      expect(prismaService.cashflow.delete).toHaveBeenCalledWith({
+        where: { id: outflowMock.id },
+      });
+      expect(inflow).toEqual(outflowMock);
     });
   });
 });
