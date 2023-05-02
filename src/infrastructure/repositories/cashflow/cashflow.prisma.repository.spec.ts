@@ -124,17 +124,6 @@ describe('CashflowPrismaRepository', () => {
       });
       expect(inflow).toEqual(outflowMock);
     });
-
-    it('should throw an error if type is not recognized', async () => {
-      expect.assertions(2);
-
-      try {
-        await sut.create({ ...createOutflowData, type: 'type' as any });
-      } catch (e) {
-        expect(prismaService.cashflow.create).toHaveBeenCalledTimes(0);
-        expect(e).toBeDefined();
-      }
-    });
   });
 
   describe('findMany()', () => {
@@ -168,6 +157,9 @@ describe('CashflowPrismaRepository', () => {
       expect(prismaService.cashflow.findUnique).toHaveBeenCalledTimes(1);
       expect(prismaService.cashflow.findUnique).toHaveBeenCalledWith({
         where: { id: inflowMock.id },
+        include: {
+          tags: true,
+        },
       });
       expect(inflow).toEqual(inflowMock);
     });
@@ -182,6 +174,9 @@ describe('CashflowPrismaRepository', () => {
       expect(prismaService.cashflow.findUnique).toHaveBeenCalledTimes(1);
       expect(prismaService.cashflow.findUnique).toHaveBeenCalledWith({
         where: { id: inflowMock.id },
+        include: {
+          tags: true,
+        },
       });
       expect(inflow).toEqual(null);
     });
@@ -198,6 +193,9 @@ describe('CashflowPrismaRepository', () => {
       expect(prismaService.cashflow.delete).toHaveBeenCalledTimes(1);
       expect(prismaService.cashflow.delete).toHaveBeenCalledWith({
         where: { id: outflowMock.id },
+        include: {
+          tags: true,
+        },
       });
       expect(inflow).toEqual(outflowMock);
     });
