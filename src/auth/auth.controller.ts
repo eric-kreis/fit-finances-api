@@ -1,7 +1,7 @@
-import { Controller, Post, Body, UseGuards, Get, Request } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Request, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Manager } from '@domain/manager/manager';
-import { NotFoundSwagger, SuccessSwagger, UnauthorizedSwagger } from '@swagger/responses';
+import { BadRequestSwagger, NotFoundSwagger, SuccessSwagger, UnauthorizedSwagger } from '@swagger/responses';
 import { createDocDescription } from '@swagger/utils';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -28,7 +28,9 @@ export class AuthController {
     type: AuthUserEntity,
     description: 'Usuário autenticado com sucesso',
   })
+  @BadRequestSwagger()
   @NotFoundSwagger()
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   public async login(@Body() createAuthDto: LoginDto): Promise<AuthUserEntity> {
     return this._authService.login(createAuthDto);
