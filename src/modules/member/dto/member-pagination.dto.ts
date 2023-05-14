@@ -1,4 +1,5 @@
-import { Member, MemberKeys } from '@domain/member/member';
+import { Member } from '@domain/member/member';
+import { MemberKeys } from '@domain/member/member-keys.enum';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { PaginationDto } from '@shared/dtos/pagination.dto';
 import { IsIn, IsNotEmpty, IsOptional } from 'class-validator';
