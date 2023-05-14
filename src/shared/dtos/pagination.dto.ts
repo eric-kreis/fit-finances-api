@@ -28,7 +28,7 @@ export abstract class PaginationDto<T> implements PaginationType<T> {
   page: number = 0;
 
   @ApiPropertyOptional({
-    description: '',
+    description: 'Ordem de ordenação',
     enum: DomainSortOrder,
     default: DomainSortOrder.asc,
   })
