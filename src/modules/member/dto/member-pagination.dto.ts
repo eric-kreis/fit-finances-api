@@ -1,18 +1,16 @@
-import { Member } from '@domain/member/member';
-import { MemberPaginationType } from '@domain/member/member.types';
+import { Member, MemberKeys } from '@domain/member/member';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { PaginationDto } from '@shared/dtos/pagination.dto';
 import { IsIn, IsNotEmpty, IsOptional } from 'class-validator';
 
-export class MemberPaginationDto extends PaginationDto<Member> implements MemberPaginationType {
+export class MemberPaginationDto extends PaginationDto<Member> {
   @ApiPropertyOptional({
     description: 'Chave de referência para ordenação',
-    enum: Object.keys(Member.prototype),
-    enumName: 'MemberKeys',
-    default: 'createdAt',
+    enum: MemberKeys,
+    default: MemberKeys.createdAt,
   })
   @IsOptional()
-  @IsIn(Object.keys(Member.prototype))
+  @IsIn(Object.keys(MemberKeys))
   orderBy: keyof Member = 'createdAt';
 
   @ApiPropertyOptional({

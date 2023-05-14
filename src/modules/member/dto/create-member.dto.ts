@@ -16,8 +16,8 @@ export class CreateMemberDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiPropertyOptional({ description: 'Número de telefone do membero', nullable: true })
+  @ApiPropertyOptional({ description: 'Número de telefone do membero', nullable: true, example: null })
   @IsOptional()
   @IsMobilePhone('pt-BR')
-  phoneNumber: string | null;
+  phoneNumber?: string | null;
 }
