@@ -4,9 +4,13 @@ import { BadRequestResponse } from './bad-request.response';
 import { HttpErrorResponse } from './http-error.response';
 
 export const SuccessSwagger = (
-  options: { type?: Type<unknown>, description?: string },
+  options: {
+    type?: Type<unknown> | Function | [Function] | string,
+    description?: string,
+  },
+  status: HttpStatus = HttpStatus.OK,
 ) => ApiResponse({
-  status: HttpStatus.OK,
+  status,
   ...options,
 });
 
@@ -32,4 +36,10 @@ export const NotFoundSwagger = () => ApiResponse({
   type: HttpErrorResponse,
   status: HttpStatus.NOT_FOUND,
   description: 'Entidade não encontrada',
+});
+
+export const ConflictSwagger = () => ApiResponse({
+  type: HttpErrorResponse,
+  status: HttpStatus.CONFLICT,
+  description: 'Entidade já registrada',
 });
