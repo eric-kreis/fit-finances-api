@@ -5,6 +5,7 @@ import { MongoIdDto } from '@shared/dtos/mongo-id.dto';
 import { JwtAuthGuard } from '@auth/guards/jwt.guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CashflowService } from '@domain/cashflow/cashflow.service';
+import { CashflowSummaryService } from '@domain/cashflow-summary/cashflow-summary.service';
 import { CreateCashflowDto } from './dto/create-cashflow.dto';
 import { CashflowPaginationDto } from './dto/cashflow-pagination.dto';
 import { CashflowEntity } from './entities/cashflow.entity';
@@ -16,7 +17,10 @@ import { CashflowEntity } from './entities/cashflow.entity';
 @UnauthorizedSwagger()
 @Controller('cashflow')
 export class CashflowController {
-  constructor(private readonly _cashflowService: CashflowService) {}
+  constructor(
+    private readonly _cashflowService: CashflowService,
+    private readonly _cashflowSummaryService: CashflowSummaryService,
+  ) {}
 
   @ApiOperation({
     summary: 'Crie um registro no fluxo de caixa',
@@ -35,7 +39,9 @@ export class CashflowController {
   }, HttpStatus.CREATED)
   @Post()
   public async create(@Body() createCashflowDto: CreateCashflowDto): Promise<CashflowEntity> {
-    return this._cashflowService.create(createCashflowDto);
+    const cashflow = await this._cashflowService.create(createCashflowDto);
+    await this._cashflowSummaryService.updateSummary(cashflow, 'creation');
+    return cashflow;
   }
 
   @ApiOperation({
@@ -75,6 +81,8 @@ export class CashflowController {
   })
   @Delete(':id')
   public async delete(@Param() { id }: MongoIdDto): Promise<CashflowEntity> {
-    return this._cashflowService.delete(id);
+    const cashflow = await this._cashflowService.delete(id);
+    await this._cashflowSummaryService.updateSummary(cashflow, 'deletion');
+    return cashflow;
   }
 }
