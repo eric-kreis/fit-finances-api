@@ -3,7 +3,14 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@auth/guards/jwt.guard';
 import { MongoIdDto } from '@shared/dtos/mongo-id.dto';
 import { ManagerService } from '@domain/manager/manager.service';
-import { ForbiddenSwagger, NotFoundSwagger, SuccessSwagger, UnauthorizedSwagger } from '@swagger/responses';
+import {
+  BadRequestSwagger,
+  ConflictSwagger,
+  ForbiddenSwagger,
+  NotFoundSwagger,
+  SuccessSwagger,
+  UnauthorizedSwagger,
+} from '@swagger/responses';
 import { Manager } from '@domain/manager/manager';
 import { createDocDescription } from '@swagger/utils';
 import { UpdateManagerDto } from './dto/update-manager.dto';
@@ -14,7 +21,7 @@ import { ManagerEntity } from './entities/manager.entity';
 @UseGuards(JwtAuthGuard)
 @Controller('manager')
 export class ManagerController {
-  constructor(private readonly _managerService: ManagerService) {}
+  constructor(private readonly _managerService: ManagerService) { }
 
   @ApiOperation({
     summary: 'Atualize um gestor',
@@ -28,9 +35,11 @@ export class ManagerController {
     description: 'Gestor atualizado com sucesso',
     type: ManagerEntity,
   })
+  @BadRequestSwagger()
   @UnauthorizedSwagger()
   @ForbiddenSwagger()
   @NotFoundSwagger()
+  @ConflictSwagger()
   @Patch(':id')
   public async updateManager(
     @Param() { id }: MongoIdDto,

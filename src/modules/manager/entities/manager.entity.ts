@@ -13,7 +13,7 @@ export class ManagerEntity implements Manager {
   public readonly createdAt: Date;
 
   @ApiProperty({
-    description: 'Última data dea atualização',
+    description: 'Última data de atualização',
   })
   public readonly updatedAt: Date;
 
