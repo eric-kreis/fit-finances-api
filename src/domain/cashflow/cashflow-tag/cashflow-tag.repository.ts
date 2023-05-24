@@ -1,7 +1,8 @@
 import { CashflowTag } from './cashflow-tag';
+import { CashflowTagQueryType } from './cashflow-tag.types';
 
 export abstract class CashflowTagRepository {
-  public abstract findMany(search: string): Promise<CashflowTag[]>;
+  public abstract findMany(query: CashflowTagQueryType): Promise<CashflowTag[]>;
 
   public abstract findById(id: string): Promise<CashflowTag | null>;
 

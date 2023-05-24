@@ -1,6 +1,7 @@
 import { CashflowTag } from '@domain/cashflow/cashflow-tag/cashflow-tag';
 import { CashflowTagFactory } from '@domain/cashflow/cashflow-tag/cashflow-tag.factory';
 import { CashflowTagRepository } from '@domain/cashflow/cashflow-tag/cashflow-tag.repository';
+import { CashflowTagQueryType } from '@domain/cashflow/cashflow-tag/cashflow-tag.types';
 import { CashflowType } from '@domain/cashflow/cashflow-type.enum';
 import { PrismaService } from '@infrastructure/prisma.service';
 import { Injectable } from '@nestjs/common';
@@ -12,9 +13,12 @@ export class CashflowTagPrismaRepository extends CashflowTagRepository {
     super();
   }
 
-  public async findMany(search: string): Promise<CashflowTag[]> {
+  public async findMany(query: CashflowTagQueryType): Promise<CashflowTag[]> {
     const cashflowTags = await this._prismaService.cashflowTag.findMany({
-      where: { name: { contains: search, mode: Prisma.QueryMode.insensitive } },
+      where: {
+        name: { contains: query.search, mode: Prisma.QueryMode.insensitive },
+        type: query.type,
+      },
     });
 
     return cashflowTags.map(({ id, name, type }) => (
