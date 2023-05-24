@@ -11,7 +11,7 @@ export abstract class Cashflow {
 
   public readonly description: string | null;
 
-  public readonly type: CashflowType;
+  public abstract readonly type: CashflowType;
 
   public readonly tags: string[];
 
@@ -21,7 +21,5 @@ export abstract class Cashflow {
     this.amount = cashflow.amount;
     this.effectiveDate = cashflow.effectiveDate;
     this.description = cashflow.description;
-    this.type = cashflow.type;
-    this.tags = cashflow.tags;
   }
 }
