@@ -3,7 +3,7 @@ import { CashflowTagService as DomainCashflowTagService } from '@domain/cashflow
 import { CashflowNotFoundException } from '@domain/cashflow/exceptions/cashflow-not-found.exception';
 import { CashflowTagRepository } from '@domain/cashflow/cashflow-tag/cashflow-tag.repository';
 import { CashflowTag } from '@domain/cashflow/cashflow-tag/cashflow-tag';
-import { CashflowTagSearchDto } from './dto/cashflow-tag-search.dto';
+import { CashflowTagQueryDto } from './dto/cashflow-tag-query.dto';
 
 @Injectable()
 export class CashflowService extends DomainCashflowTagService {
@@ -11,7 +11,7 @@ export class CashflowService extends DomainCashflowTagService {
     super();
   }
 
-  public async findMany(query: CashflowTagSearchDto): Promise<CashflowTag[]> {
+  public async findMany(query: CashflowTagQueryDto): Promise<CashflowTag[]> {
     return this._cashflowTagRepository.findMany(query);
   }
 
