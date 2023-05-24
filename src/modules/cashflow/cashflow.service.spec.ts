@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CashflowRepository } from '@domain/cashflow/cashflow.repository';
 import { cashflowsMock, inflowMock } from '@mocks/cashflow.mock';
 import { DomainSortOrder } from '@domain/enums';
-import { CashNotFoundException } from '@domain/cashflow/exceptions/cashflow-not-found.exception';
+import { CashflowNotFoundException } from '@domain/cashflow/exceptions/cashflow-not-found.exception';
 import { CashflowService } from './cashflow.service';
 
 const cashflowRepositoryMock = mockDeep<CashflowRepository>();
@@ -97,7 +97,7 @@ describe('CashflowService', () => {
         await sut.findById(inflowMock.id);
       } catch (e) {
         expect(cashflowRepository.findById).toHaveBeenCalledTimes(1);
-        expect(e).toBeInstanceOf(CashNotFoundException);
+        expect(e).toBeInstanceOf(CashflowNotFoundException);
       }
     });
   });
@@ -126,7 +126,7 @@ describe('CashflowService', () => {
       } catch (e) {
         expect(cashflowRepository.findById).toHaveBeenCalledTimes(1);
         expect(cashflowRepository.delete).toHaveBeenCalledTimes(0);
-        expect(e).toBeInstanceOf(CashNotFoundException);
+        expect(e).toBeInstanceOf(CashflowNotFoundException);
       }
     });
   });
